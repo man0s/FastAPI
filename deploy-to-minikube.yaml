@@ -24,7 +24,7 @@ spec:
               cpu: 25m
               memory: 10Mi
           ports:
-            - containerPort: 8080
+            - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -35,5 +35,5 @@ spec:
   selector:
     app: fastapi
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 80
+      targetPort: 80
