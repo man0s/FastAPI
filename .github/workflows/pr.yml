@@ -57,7 +57,7 @@ jobs:
         minikube tunnel &> /dev/null &
     - name: Test service URLs
       run: |
-        curl -vk http://127.0.0.1
+        curl -vk http://localhost
     # - name: Test service URLs
     #   run: |
     #     minikube service list
