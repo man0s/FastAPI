@@ -25,17 +25,17 @@ spec:
               memory: 10Mi
           ports:
             - containerPort: 80
-              name: http-api-svc
 ---
 apiVersion: v1
 kind: Service
-metadata:
+metadata:  
   name: fastapi-service
 spec:
-  selector:
+  selector:    
     app: fastapi
-  ports:
-  - name: fastapi-port
-    protocol: TCP
+  type: NodePort
+  ports:  
+  - name: http
     port: 80
-    targetPort: http-api-svc
+    targetPort: 80
+    protocol: TCP
