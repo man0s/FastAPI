@@ -25,7 +25,7 @@ spec:
               memory: 10Mi
           ports:
             - containerPort: 80
-              name: http-fastapi-svc
+              name: http-api-svc
 ---
 apiVersion: v1
 kind: Service
@@ -38,4 +38,4 @@ spec:
   - name: fastapi-port
     protocol: TCP
     port: 80
-    targetPort: http-fastapi-svc
+    targetPort: http-api-svc
