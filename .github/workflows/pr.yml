@@ -55,15 +55,7 @@ jobs:
       run: kubectl get svc -o wide
     - name: Test service URLs
       run: minikube service list
-    - name: minikube expose
-      run: minikube service fastapi-service --url
-    - name: kubectl
-      run: kubectl get svc -o wide
+    - name: minikube port-forward
+      run: kubectl port-forward service/fastapi-service 8080:80 &
     - name: curl
-      run: curl $(minikube service fastapi-service --url)
-    - name: Test service URLs
-      run: |
-        minikube service list
-        minikube service fastapi-service --url
-        echo "------------------opening the service------------------"
-        curl $(minikube service fastapi-service --url)
+      run: curl http://localhost:8080
