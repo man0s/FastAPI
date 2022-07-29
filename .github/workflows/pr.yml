@@ -5,7 +5,7 @@ on:
 jobs:
   lint-test:
     runs-on: ubuntu-latest
-    name: Lint and Test the Python Application
+    name: Lint and Test the application
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
@@ -29,9 +29,9 @@ jobs:
   cicd-pipeline:
     needs: lint-test
     runs-on: ubuntu-latest
-    name: Build and Deploy FastAPI to Minikube
+    name: Build and Deploy to minikube
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Start minikube
       id: minikube
       with:
@@ -45,16 +45,13 @@ jobs:
         eval $(minikube -p minikube docker-env)
         docker build -f ./Dockerfile -t fastapi .
         echo -n "Verifying images:"
-        docker images
+        docker images    
     - name: Deploy to minikube
       run:
-        ls -l      
-    # - name: Deploy to minikube
-    #   run:
-    #     kubectl apply -f deploy-to-minikube.yaml
-    # - name: Test service URLs
-    #   run: |
-    #     minikube service list
-    #     minikube service example --url
-    #     echo "------------------opening the service------------------"
-    #     curl $(minikube service example --url)        
+        kubectl apply -f deploy-to-minikube.yaml
+    - name: Test service URLs
+      run: |
+        minikube service list
+        minikube service fastapi --url
+        echo "------------------opening the service------------------"
+        curl $(minikube service fastapi --url)
