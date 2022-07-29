@@ -49,10 +49,17 @@ jobs:
     - name: Deploy to minikube
       run:
         kubectl apply -f deploy-to-minikube.yaml
-    - name: Restart coredns
-      run: kubectl -n kube-system rollout restart deployment coredns
+    - name: kubectl describe Service
+      run:
+        kubectl describe service fastapi-service
     - name: Test service URLs
       run: |
-        minikube service fastapi-service
+        minikube tunnel
         echo "------------------opening the service------------------"
-        curl -vk $(minikube service fastapi-service --url)
+        curl -vk http://127.0.01
+    # - name: Test service URLs
+    #   run: |
+    #     minikube service list
+    #     minikube service fastapi-service --url
+    #     echo "------------------opening the service------------------"
+    #     curl -vk $(minikube service fastapi-service --url)
