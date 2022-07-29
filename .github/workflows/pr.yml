@@ -52,11 +52,12 @@ jobs:
     - name: kubectl describe Service
       run:
         kubectl describe service fastapi-service
+    - name: minikube tunnel
+      run: 
+        minikube tunnel &> /dev/null &
     - name: Test service URLs
       run: |
-        minikube tunnel
-        echo "------------------opening the service------------------"
-        curl -vk http://127.0.01
+        curl -vk http://127.0.0.1
     # - name: Test service URLs
     #   run: |
     #     minikube service list
