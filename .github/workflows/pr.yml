@@ -1,0 +1,36 @@
+name: CI/CD Pipeline
+on:
+  - push
+# - pull_request
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    name: build example and deploy to minikube
+    steps:
+    - uses: actions/checkout@v2
+    - name: Start minikube
+      id: minikube
+      with:
+        minikube-version: 1.25.2
+      uses: medyagh/setup-minikube@master
+    - name: kubectl
+      run: kubectl get pods -A
+    - name: Build image
+      run: |
+        export SHELL=/bin/bash
+        eval $(minikube -p minikube docker-env)
+        docker build -f ./Dockerfile -t fastapi .
+        echo -n "Verifying images:"
+        docker images
+    - name: Deploy to minikube
+      run:
+        ls -l      
+    # - name: Deploy to minikube
+    #   run:
+    #     kubectl apply -f deploy-to-minikube.yaml
+    # - name: Test service URLs
+    #   run: |
+    #     minikube service list
+    #     minikube service example --url
+    #     echo "------------------opening the service------------------"
+    #     curl $(minikube service example --url)        
