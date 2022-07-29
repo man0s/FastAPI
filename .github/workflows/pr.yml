@@ -49,9 +49,6 @@ jobs:
     - name: Deploy to minikube
       run:
         kubectl apply -f deploy-to-minikube.yaml
-    - name: Test service URLs
-      run: |
-        minikube service list
-        minikube service fastapi-service
-        echo "------------------opening the service------------------"
-        minikube ssh curl $(minikube service fastapi-service --url)    
+    - name: Ensure deployment is available
+      run:
+        kubectl wait deployment/fastapi --for condition=Available=True --timeout=90s
