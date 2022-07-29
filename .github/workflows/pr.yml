@@ -52,6 +52,6 @@ jobs:
     - name: Test service URLs
       run: |
         minikube service list
-        minikube service fastapi-service --url
+        minikube service fastapi-service
         echo "------------------opening the service------------------"
-        curl $(minikube service fastapi-service --url)    
+        minikube ssh curl $(minikube service fastapi-service --url)    
