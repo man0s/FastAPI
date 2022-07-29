@@ -49,13 +49,11 @@ jobs:
     - name: Deploy to minikube
       run:
         kubectl apply -f deploy-to-minikube.yaml
-    - name: kubectl
-      run: kubectl get pods -A
-    - name: kubectl
-      run: kubectl get svc -o wide
+    - name: Wait for deployment to be available
+      run: kubectl wait deployment/fastapi --for condition=Available=True --timeout=90s
     - name: Test service URLs
-      run: minikube service list
-    - name: minikube port-forward
-      run: kubectl port-forward service/fastapi-service 8080:80 &
-    - name: curl
-      run: curl http://localhost:8080
+      run: |
+        minikube service list
+        minikube service fastapi-service --url
+        echo "------------------opening the service------------------"
+        curl $(minikube service fastapi-service --url)
