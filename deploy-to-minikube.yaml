@@ -15,7 +15,7 @@ spec:
       containers:
         - name: fastapi
           imagePullPolicy: Never
-          image: fastapi:latest
+          image: local/fastapi:latest
           resources:
             limits:
               cpu: 50m
