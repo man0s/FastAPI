@@ -55,9 +55,12 @@ jobs:
     - name: minikube tunnel
       run: 
         minikube tunnel &> /dev/null &
+    - name: Get local IP address
+      run:
+        ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'
     - name: Test service URLs
       run: |
-        curl -vk http://localhost
+        curl -vk $(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')
     # - name: Test service URLs
     #   run: |
     #     minikube service list
