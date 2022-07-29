@@ -49,21 +49,9 @@ jobs:
     - name: Deploy to minikube
       run:
         kubectl apply -f deploy-to-minikube.yaml
-    - name: kubectl describe Service
-      run:
-        kubectl describe service fastapi-service
-    - name: minikube tunnel
-      run: 
-        minikube tunnel &> /dev/null &
-    - name: Get local IP address
-      run:
-        ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'
     - name: Test service URLs
       run: |
-        curl -vk $(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')
-    # - name: Test service URLs
-    #   run: |
-    #     minikube service list
-    #     minikube service fastapi-service --url
-    #     echo "------------------opening the service------------------"
-    #     curl -vk $(minikube service fastapi-service --url)
+        minikube service list
+        minikube service fastapi-service --url
+        echo "------------------opening the service------------------"
+        curl $(minikube service fastapi-service --url)    
