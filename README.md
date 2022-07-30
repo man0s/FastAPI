@@ -54,6 +54,7 @@ There are a lot more things that we can add in the pipeline:
 * Vulnerability scanning of the Docker image (e.g. snyk).
 * Testing of the service endpoint after the Kubernetes deployment.
 * Execute the pipeline in higher environments after success.
+* Workflow notifications (e.g. Email, Slack)
 
 ## References
 1. [Events that trigger workflows](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows)
