@@ -53,6 +53,7 @@ There are a lot more things that we can add in the pipeline:
 * Environmental variables and secrets that are interpolated on the runner machine that runs the workflow.
 * Vulnerability scanning of the Docker image (e.g. snyk).
 * Testing of the service endpoint after the Kubernetes deployment.
+* Horizontal Pod autoscaling based on resource usage(cpu, memory) and metrics(client requests or I/O writes per second). 
 * Execute the pipeline in higher environments after success.
 * Workflow notifications (e.g. Email, Slack)
 
