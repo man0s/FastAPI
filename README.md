@@ -1,17 +1,17 @@
-# CI/CD Pipeline
+# CI/CD Pipeline [![CI/CD Pipeline](https://github.com/man0s/FastAPI/actions/workflows/pipeline.yml/badge.svg)](https://github.com/man0s/FastAPI/actions/workflows/pipeline.yml)
 ## Getting Started
 When committing to `master` branch, [Github Actions](https://github.com/features/actions) triggers the below workflow:
 
-1. Setup 
+1. **Setup**
     * Checkout the repository.
     * Make an artifact and upload it.
-1. Lint & Test
+1. **Lint & Test**
     * Download the artifact.
     * Install [Python](https://www.python.org/).
     * Install the dependencies.
     * Lint with [flake8](https://github.com/PyCQA/flake8).
     * Test with [pytest](https://docs.pytest.org/en/7.1.x/).
-1. Build & Deploy
+1. **Build & Deploy**
     * Download the artifact.
     * Start [minikube](https://minikube.sigs.k8s.io/docs/).
     * Build [Docker](https://www.docker.com/) image.
