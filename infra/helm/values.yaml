@@ -1,0 +1,17 @@
+namespace: default
+
+image:
+  name: local/fastapi
+  tag: latest
+  pull: Never
+     
+deployment:
+  replicas: 2
+  strategy: RollingUpdate
+  container:
+    name: fastapi
+    port: 80
+
+service:
+  type: NodePort
+  port: 80
