@@ -1,0 +1,84 @@
+name: CI/CD Pipeline
+on:
+  push:
+    branches:    
+      - 'master'
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    name: Setup
+    steps:
+      - name: Use repository
+        uses: actions/checkout@v2
+      - name: Upload repository
+        uses: actions/upload-artifact@v2
+        with:
+          name: repository
+          path: |
+            ${{ github.workspace }}/helm
+            ${{ github.workspace }}/Dockerfile
+            ${{ github.workspace }}/src
+            ${{ github.workspace }}/tests
+            ${{ github.workspace }}/requirements.txt
+  lint-test:
+    needs: setup
+    runs-on: ubuntu-latest
+    name: Lint & Test
+    steps:
+      - name: Download repository
+        uses: actions/download-artifact@v2
+        with:
+          name: repository
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest requests
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test with pytest
+        run: |
+          pytest
+  build-deploy:
+    needs: [setup, lint-test]
+    runs-on: ubuntu-latest
+    name: Build & Deploy
+    steps:
+    - name: Download repository
+      uses: actions/download-artifact@v2
+      with:
+        name: repository
+    - name: Start minikube
+      id: minikube
+      with:
+        minikube-version: 1.25.2
+      uses: medyagh/setup-minikube@master
+    - name: Build image
+      run: |
+        export SHELL=/bin/bash
+        eval $(minikube -p minikube docker-env)
+        docker build -f ./Dockerfile -t local/fastapi .
+        echo -n "Verifying images:"
+        docker images
+    - name: Install helm
+      run: |
+        curl -LO https://get.helm.sh/helm-v3.9.2-linux-amd64.tar.gz
+        tar -zxvf helm-v3.9.2-linux-amd64.tar.gz
+        mv linux-amd64/helm /usr/local/bin/helm
+        helm version
+    - name: Lint helm charts
+      run: helm lint ./helm/
+    - name: Deploy helm chart
+      run: |
+        helm upgrade --install --atomic --timeout 1m fastapi ./helm/ -f ./helm/values.yaml
+    - name: Ensure the readiness of pods
+      run:
+        kubectl wait pods -l app=fastapi --for condition=Ready --timeout=90s

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: fastapi
+type: application
+icon: https://
+description: This is a HTTP FastAPI
+version: 0.0.1
