@@ -1,60 +1,3 @@
-# name: CI/CD Pipeline
-# on:
-#   push:
-#     branches:    
-#       - 'development'
-# jobs:
-#   lint-test:
-#     runs-on: ubuntu-latest
-#     name: Lint and Test
-#     steps:
-#       - uses: actions/checkout@v3
-#       - name: Set up Python
-#         uses: actions/setup-python@v4
-#         with:
-#           python-version: "3.9"
-#       - name: Install dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install flake8 pytest requests
-#           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-#       - name: Lint with flake8
-#         run: |
-#           # stop the build if there are Python syntax errors or undefined names
-#           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-#           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-#           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-#       - name: Test with pytest
-#         run: |
-#           pytest
-#   cicd-pipeline:
-#     needs: lint-test
-#     runs-on: ubuntu-latest
-#     name: Build and Deploy
-#     steps:
-#     - uses: actions/checkout@v3
-#     - name: Start minikube
-#       id: minikube
-#       with:
-#         minikube-version: 1.25.2
-#       uses: medyagh/setup-minikube@master
-#     - name: kubectl
-#       run: kubectl get pods -A
-#     - name: Build image
-#       run: |
-#         export SHELL=/bin/bash
-#         eval $(minikube -p minikube docker-env)
-#         docker build -f ./Dockerfile -t local/fastapi .
-#         echo -n "Verifying images:"
-#         docker images    
-#     - name: Deploy to minikube
-#       run:
-#         kubectl apply -f deploy-to-minikube.yaml
-#     - name: Ensure the readiness of pods
-#       run:
-#         kubectl wait pods -l app=fastapi --for condition=Ready --timeout=90s
-
-
 name: CI/CD Pipeline
 on:
   push:
@@ -118,8 +61,6 @@ jobs:
       with:
         minikube-version: 1.25.2
       uses: medyagh/setup-minikube@master
-    - name: kubectl
-      run: kubectl get pods -A
     - name: Build image
       run: |
         export SHELL=/bin/bash
@@ -135,12 +76,10 @@ jobs:
         helm version
     - name: Lint helm charts
       run: helm lint ./helm/
-    - name: Deploy
+    - name: Deploy helm chart
       run: |
         helm upgrade --install --atomic --timeout 1m fastapi ./helm/ -f ./helm/values.yaml
     - name: Ensure the readiness of pods
       run:
         kubectl wait pods -l app=fastapi --for condition=Ready --timeout=90s
-    - name: kube get all
-      run:
-        kubectl get all
+
