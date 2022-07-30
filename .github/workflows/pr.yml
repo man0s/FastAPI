@@ -49,6 +49,6 @@ jobs:
     - name: Deploy to minikube
       run:
         kubectl apply -f deploy-to-minikube.yaml
-    - name: Ensure deployment is available
+    - name: Ensure the readiness of pods
       run:
-        kubectl wait deployment/fastapi --for condition=Available=True --timeout=90s
+        kubectl wait pods -l app=fastapi --for condition=Ready --timeout=90s
