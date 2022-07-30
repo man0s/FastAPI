@@ -1,4 +1,11 @@
 # CI/CD Pipeline [![CI/CD Pipeline](https://github.com/man0s/FastAPI/actions/workflows/pipeline.yml/badge.svg)](https://github.com/man0s/FastAPI/actions/workflows/pipeline.yml)
+## Table of Contents
+- [Getting Started](#getting-started)
+- [Architecture Overview](#architecture-overview)
+- [Repository Structure](#repository-structure)
+- [Improvements](#improvements)
+- [References](#references)
+
 ## Getting Started
 When committing to `master` branch, [Github Actions](https://github.com/features/actions) triggers the below workflow:
 
@@ -19,9 +26,8 @@ When committing to `master` branch, [Github Actions](https://github.com/features
     * Lint helm chart.
     * Deploy helm chart.
     * Ensure the readiness of created pods.
-
 ## Architecture Overview
-![Architecture diagram](https://i.imgur.com/9VoVdDv.png)
+![Architecture diagram](https://i.imgur.com/2rfzdrk.png)
 
 ## Repository Structure
     .
@@ -40,6 +46,14 @@ When committing to `master` branch, [Github Actions](https://github.com/features
     ├── Dockerfile
     ├── requirements.md
     └── README.md
+
+
+## Improvements
+There are a lot more things that we can add in the pipeline:
+* Environmental variables and secrets that are interpolated on the runner machine that runs the workflow.
+* Vulnerability scanning of the Docker image (e.g. snyk).
+* Testing of the service endpoint after the Kubernetes deployment.
+* Execute the pipeline in higher environments after success.
 
 ## References
 1. [Events that trigger workflows](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows)

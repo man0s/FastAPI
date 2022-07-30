@@ -82,4 +82,3 @@ jobs:
     - name: Ensure the readiness of pods
       run:
         kubectl wait pods -l app=fastapi --for condition=Ready --timeout=90s
-
