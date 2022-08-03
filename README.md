@@ -7,7 +7,8 @@
 - [References](#references)
 
 ## Getting Started
-When committing to `master` branch, [Github Actions](https://github.com/features/actions) triggers the below workflow:
+When committing to the `master` branch, [Github Actions](https://github.com/features/actions) triggers the below 
+workflow:
 
 1. **Setup**
     * Checkout the repository.
