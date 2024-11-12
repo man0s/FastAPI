@@ -9,9 +9,9 @@ jobs:
     name: Setup
     steps:
       - name: Use repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Upload repository
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: repository
           path: |
@@ -26,7 +26,7 @@ jobs:
     name: Lint & Test
     steps:
       - name: Download repository
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: repository
       - name: Set up Python
@@ -53,7 +53,7 @@ jobs:
     name: Build & Deploy
     steps:
     - name: Download repository
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: repository
     - name: Start minikube
