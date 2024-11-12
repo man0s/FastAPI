@@ -48,7 +48,6 @@ workflow:
     ├── requirements.md
     └── README.md
 
-
 ## Improvements
 There are a lot more things that we can add in the pipeline:
 * Environmental variables and secrets that are interpolated on the runner machine that runs the workflow.
